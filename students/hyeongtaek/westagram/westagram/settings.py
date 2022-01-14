@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 
-from pathlib     import Path #기존에 settings.py 에 있는 코드
+from pathlib     import Path 
 from my_settings import DATABASES, SECRET_KEY
 
 import pymysql
