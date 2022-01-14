@@ -1,10 +1,10 @@
 import json
 
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse
-from django.views import View
+from django.http            import JsonResponse
+from django.views           import View
 
-from users.models import User
+from users.models     import User
 from users.validators import validate_email, validate_password, validate_email_duplicate
 
 
@@ -23,10 +23,10 @@ class SignUpView(View):
             validate_email_duplicate(email)
 
             User.objects.create(
-                name=name,
-                email=email,
-                password=password,
-                phone=phone,
+                name =     name,
+                email =    email,
+                password = password,
+                phone =    phone,
             )
 
             return JsonResponse({"message": "SUCCESS"}, status=201)
