@@ -1,31 +1,20 @@
 import re
 
-from django.core.exceptions import ValidationError
-
 from users.models import User
 
 
 def validate_email(email):
-    email_match_result = re.match("^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email)
-    if email_match_result == None:
-        raise ValidationError(
-            message = ('INVALID VALUE'),
-            code    = 'invalid'
-        )
+    if not re.match("^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email):
+        raise Exception("ERROR : INVALID_VALUE (email)")
 
 def validate_password(password):
-    password_match_result = re.match("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}", password)
-    if password_match_result == None:
-        raise ValidationError(
-            message = ('INVALID VALUE'),
-            code    = 'invalid',
-        )
+    if not re.match("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}", password):
+        raise Exception("ERROR : INVALID_VALUE (password)")
 
 def validate_duplicate(email):
-    user = User.objects.get(email=email)
-    if user.email == email:
-        raise ValidationError(
-            message = ('DUPLICATE'),
-            code    = 'invalid',
-        )
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        if user.email == email:
+            raise Exception("ERROR : DUPLICATE")
 

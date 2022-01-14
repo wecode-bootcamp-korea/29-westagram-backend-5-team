@@ -1,6 +1,5 @@
 import json
 
-from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.views import View
 
@@ -17,23 +16,17 @@ class SignUpView(View):
             email = data['email']
             password = data['password']
             phone = data['phone']
-        except:
-            return JsonResponse({"message": "KEY_ERROR (email / password is None)"}, status=400)
 
-        try:
             if email == "" or password == "":
-                raise Exception()
-        except Exception:
-            return JsonResponse({"message": "KEY_ERROR (email / password is blank)"}, status=400)
+                raise Exception("ERROR : email or password is blank")
 
-        try:
             validate_email(email)
             validate_password(password)
             validate_duplicate(email)
-        except ValidationError:
-            return JsonResponse({"message" : "KEY_ERROR (ValidationError)"}, status=400)
-        except User.DoesNotExist:
-            pass
+        except KeyError:
+            return JsonResponse({"message" : "KEY_ERROR"}, status=400)
+        except Exception as e:
+            return JsonResponse({"message" : str(e)}, status=400)
 
         User.objects.create(
             name     = name,
