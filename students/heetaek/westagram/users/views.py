@@ -6,7 +6,7 @@ from django.views import View
 from users.models import User
 from users.validator import *
 
-class SignUp(View):
+class SignUpView(View):
     def post(self,request):
         data = json.loads(request.body)
         try:
@@ -15,10 +15,10 @@ class SignUp(View):
             password    = data["password"]
             phone       = data["phone"]
 
-            if is_email(email) == False:
+            if not is_email(email):
                 return JsonResponse ({'message':'E-mail is not valid'}, status = 400)
 
-            if is_password(password) == False:
+            if not is_password(password):
                 return JsonResponse({'message':'Password is not valid'}, status = 400)
 
             User.objects.create(
