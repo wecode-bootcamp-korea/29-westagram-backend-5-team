@@ -12,10 +12,10 @@ class SignUpView(View):
         data = json.loads(request.body)
 
         try:
-            name = data['name']
-            email = data['email']
+            name     = data['name']
+            email    = data['email']
             password = data['password']
-            phone = data['phone']
+            phone    = data['phone']
 
             if email == "" or password == "":
                 raise Exception("ERROR : email or password is blank")
