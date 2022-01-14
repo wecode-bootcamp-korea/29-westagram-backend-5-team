@@ -12,10 +12,19 @@ class SignUpView(View):
     def post(self, request):
         data = json.loads(request.body)
 
-        name     = data['name']
-        email    = data['email']
-        password = data['password']
-        phone    = data['phone']
+        try:
+            name = data['name']
+            email = data['email']
+            password = data['password']
+            phone = data['phone']
+        except:
+            return JsonResponse({"message": "KEY_ERROR (email / password is None)"}, status=400)
+
+        try:
+            if email == "" or password == "":
+                raise Exception()
+        except Exception:
+            return JsonResponse({"message": "KEY_ERROR (email / password is blank)"}, status=400)
 
         try:
             validate_email(email)
