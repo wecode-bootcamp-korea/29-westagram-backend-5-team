@@ -24,7 +24,7 @@ class SignUpView(View):
         except KeyError:
             return JsonResponse({"message" : "KEY_ERROR"}, status=400)
         except ValidationError as e:
-            return JsonResponse({"message" : str(e.message)}, status=400)
+            return JsonResponse({"message" : e.message}, status=400)
 
         User.objects.create(
             name     = name,
