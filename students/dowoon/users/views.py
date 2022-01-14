@@ -23,10 +23,10 @@ class SignUpView(View):
             validate_email_duplicate(email)
 
             User.objects.create(
-                name =     name,
-                email =    email,
+                name     = name,
+                email    = email,
                 password = password,
-                phone =    phone,
+                phone    = phone,
             )
 
             return JsonResponse({"message": "SUCCESS"}, status=201)
