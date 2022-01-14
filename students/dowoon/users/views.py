@@ -21,17 +21,17 @@ class SignUpView(View):
             validate_email(email)
             validate_password(password)
             validate_email_duplicate(email)
+
+            User.objects.create(
+                name=name,
+                email=email,
+                password=password,
+                phone=phone,
+            )
+
+            return JsonResponse({"message": "SUCCESS"}, status=201)
         except KeyError:
             return JsonResponse({"message" : "KEY_ERROR"}, status=400)
         except ValidationError as e:
             return JsonResponse({"message" : e.message}, status=400)
-
-        User.objects.create(
-            name     = name,
-            email    = email,
-            password = password,
-            phone    = phone,
-        )
-
-        return JsonResponse({"message" : "SUCCESS"}, status=201)
 
