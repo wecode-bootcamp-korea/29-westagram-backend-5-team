@@ -4,9 +4,10 @@ from django.core.exceptions import ValidationError
 from django.http            import JsonResponse
 from django.views           import View
 
+import bcrypt
+
 from users.models     import User
 from users.validators import validate_email, validate_password, validate_email_duplicate
-
 
 class SignUpView(View):
     def post(self, request):
@@ -22,10 +23,13 @@ class SignUpView(View):
             validate_password(password)
             validate_email_duplicate(email)
 
+            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            hashed_password = hashed_password.decode('utf-8')
+
             User.objects.create(
                 name     = name,
                 email    = email,
-                password = password,
+                password = hashed_password,
                 phone    = phone,
             )
 
