@@ -10,7 +10,7 @@ import jwt
 from users.models     import User
 from users.validators import validate_email, validate_password, validate_email_duplicate
 
-from my_settings import SECRET_STR, algorithm
+from my_settings import JWT_SECRET_KEY, ALGORITHM
 
 class SignUpView(View):
     def post(self, request):
@@ -58,6 +58,6 @@ class LoginView(View):
         if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             return JsonResponse({"message": "INVALID_USER (password)"}, status=401)
 
-        access_token = jwt.encode({'id': user.id}, SECRET_STR, algorithm = algorithm)
+        access_token = jwt.encode({'id': user.id}, JWT_SECRET_KEY, algorithm = ALGORITHM)
 
         return JsonResponse({"message": "SUCCESS", "jwt": access_token}, status=200)
