@@ -15,11 +15,8 @@ class SignUpView(View):
             password    = data["password"]
             phone       = data["phone"]
 
-            if not is_email(email):
-                return JsonResponse ({'message' : 'E-mail is not valid'}, status = 400)
-
-            if not is_password(password):
-                return JsonResponse({'message' : 'Password is not valid'}, status = 400)
+            is_email(email)
+            is_password(password)
 
             User.objects.create(
                 name        = name,
