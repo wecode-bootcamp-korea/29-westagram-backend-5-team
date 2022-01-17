@@ -24,7 +24,6 @@ class SignUpView(View):
             validate_email_duplicate(email)
 
             hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-            hashed_password = hashed_password.decode('utf-8')
 
             User.objects.create(
                 name     = name,
