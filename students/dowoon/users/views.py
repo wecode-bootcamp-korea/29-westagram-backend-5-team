@@ -54,6 +54,3 @@ class LoginView(View):
             return JsonResponse({"message": "INVALID_USER (password)"}, status=401)
         else:
             return JsonResponse({"message": "SUCCESS"}, status=200)
-
-
-
