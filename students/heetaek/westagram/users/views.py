@@ -23,7 +23,7 @@ class SignUpView(View):
             User.objects.create(
                 name        = name,
                 email       = email,
-                password    = hashed_password,
+                password    = hashed_password.decode('utf-8'),
                 phone       = phone
             )
             return JsonResponse({'message' : 'SUCCESS'}, status = 201)
