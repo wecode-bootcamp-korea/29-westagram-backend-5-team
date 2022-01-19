@@ -1,9 +1,9 @@
 import json
 import re
 
+from django.http import JsonResponse
 from django.core.exceptions import ValidationError 
 from django.views import View 
-from django.http import JsonResponse
 
 from users.models import User
 
@@ -14,29 +14,31 @@ class SignUpView(View):
     def post(self,request):
         data = json.loads(request.body)
         try:
-            name               = data['name']
-            email              = data['email']
-            password           = data['password']
-            phone_number       = data['phone_number']
+            name          = data['name']
+            email         = data['email']
+            password      = data['password']
+            phone_number  = data['phone_number']
 
+            if User.objects.filter(email = email).exists():
+                return JsonResponse({'message' : 'EMAIL_ALREADY_EXISTS'}, status=400)    
+            
             if not re.match(REGEX_EMAIL , email):
                 return JsonResponse({"message" : "INVALID_EMAIL"}, status = 400)
-            
+
             if not re.match(REGEX_PASSWORD , password):
                 return JsonResponse({"message" : "INVALID_PASSWORD"}, status = 400)
 
             User.objects.create(
-                name          = data['name'],
-                email         = data['email'],
-                password      = data['password'],
-                phone_number  = data['phone_number'],
+                name          = name,
+                email         = email,
+                password      = password,
+                phone_number  = phone_number,
             )
 
             return JsonResponse({"message" : "SUCCESS"}, status = 201) 
     
         except KeyError:
             return JsonResponse({"message" : "KEY_ERROR"}, status=401)
-   
 
 
 class LogInView(View):
