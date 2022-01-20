@@ -1,11 +1,13 @@
 import json
 import re
+import bcrypt 
 
 from django.http import JsonResponse
 from django.core.exceptions import ValidationError 
 from django.views import View 
 
 from users.models import User
+from my_settings  import SECRET_KEY
 
 REGEX_EMAIL = "^[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.]+$"
 REGEX_PASSWORD = "^(?=.{8,16}$)(?=.*[a-z])(?=.*[0-9]).*$"
@@ -28,10 +30,12 @@ class SignUpView(View):
             if not re.match(REGEX_PASSWORD , password):
                 return JsonResponse({"message" : "INVALID_PASSWORD"}, status = 400)
 
+            hashed_password = bcrypt.hashpw(data['password'].encode('UTF-8'), bcrypt.gensalt())
+
             User.objects.create(
                 name          = name,
                 email         = email,
-                password      = password,
+                password      = hashed_password.decode('utf-8'),
                 phone_number  = phone_number,
             )
 
