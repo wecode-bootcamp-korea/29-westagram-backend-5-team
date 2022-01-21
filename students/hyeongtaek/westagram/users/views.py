@@ -30,12 +30,12 @@ class SignUpView(View):
             if not re.match(REGEX_PASSWORD , password):
                 return JsonResponse({"message" : "INVALID_PASSWORD"}, status = 400)
 
-            hashed_password = bcrypt.hashpw(data['password'].encode('UTF-8'), bcrypt.gensalt())
+            hashed_password = bcrypt.hashpw(data['password'].encode('UTF-8'), bcrypt.gensalt()).decode('utf-8')
 
             User.objects.create(
                 name          = name,
                 email         = email,
-                password      = hashed_password.decode('utf-8'),
+                password      = hashed_password,
                 phone_number  = phone_number,
             )
 
